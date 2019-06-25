@@ -2,14 +2,7 @@ from urllib.request import urlopen
 from bs4 import BeautifulSoup
 import pandas as pd
 
-    
-#Clean "None"
-#Ask user what year
-#Asks user for players name
-
 user_input = input("What player would you like to see stats on? : ")
-print(user_input.lower())
-
 
 #Analyzing the year
 year = 2019
@@ -17,7 +10,6 @@ year = 2019
 #Scraping URL page
 url = "https://www.basketball-reference.com/leagues/NBA_{}_per_game.html".format(year)
 html = urlopen(url)
-
 
 #Passed features to get around error
 soup = BeautifulSoup(html,features='lxml')
@@ -34,20 +26,38 @@ headers = headers[1:]
 #Avoid the first header
 rows = soup.findAll('tr')[1:]
 
-
+#Pull information from site in to 2d
 player_stats = [[td.getText() for td in rows[i].findAll('td')]
                 for i in range(len(rows))]
-
-
-
 
 #2d structure with stats and headers as columns
 stats_with_none = pd.DataFrame(player_stats, columns = headers)
 
+#Get rid of 'None' values, drops row
 new_stats = stats_with_none.dropna(axis=0, how='any')
 
-count = 0
 
+#Find player with user input
+player_df = new_stats[new_stats['Player'] == user_input]
+print(player_df)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+count = 0
 #List of player names
 player_list = []
 for i in player_stats:
@@ -58,12 +68,12 @@ for i in player_stats:
         count += 1
     #If empty do not add to list
     except IndexError:
-        pass
-        
+        pass  
 
 #Matches user input to player lists
 matching = [name for name in player_list if user_input.lower() in name]
-print(matching)
+
+
 
 
 
