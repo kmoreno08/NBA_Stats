@@ -1,6 +1,7 @@
 from urllib.request import urlopen
 from bs4 import BeautifulSoup
 import pandas as pd
+import numpy as np
 
 
 
@@ -41,34 +42,46 @@ headers = headers[1:]
 #Avoid the first header
 rows = soup.findAll('tr')[1:]
 
-#Pull information from site in to 2d
+#Pull and store information from site
 player_stats = [[td.getText() for td in rows[i].findAll('td')]
                 for i in range(len(rows))]
 
 
-#2d structure with stats and headers as columns
+#DataFrame structure with stats and headers as columns
 stats_with_none = pd.DataFrame(player_stats, columns = headers)
 
+
+
+#Cells have whitespace, change value to NaN
+stats_with_none = stats_with_none.replace('', np.nan)
+
+
+
 #Get rid of 'None' values, drops row
-new_stats = stats_with_none.dropna(axis=0, how='any')
-
-
-#Find player with user input
-player_df = new_stats[new_stats['Player'] == user_input]
-
-
-
-player_df.info()
-#player_df['AST'].plot()
-#print(layer_df[1])
-
-
-
-print(player_df['FT%'])
+stats_with_none = stats_with_none.dropna(axis=0, how='any')
 
 
 
 
+#Change Headers from string to Int and float
+stats_with_none = stats_with_none.astype({"Age":'int64',"G":'int64',"GS":'int64',
+                  "MP":'float64',"FG":'float64',"FGA":'float64',
+                  "FG%":'float64', "3P":'float64', "3PA":'float64',
+                  "3P%":'float64', "2P": 'float64', "2PA":'float64',
+                  "2P%":'float64', "eFG%": 'float64', "FT":'float64',
+                  "FTA":'float64', "FT%": 'float64', "ORB": 'float64',
+                  "DRB": 'float64', "TRB": 'float64', "AST": 'float64',
+                  "STL": 'float64', "BLK": 'float64', "TOV": 'float64',
+                  "PF": 'float64', "PTS": 'float64'})
+
+
+
+print(stats_with_none.info())
+
+
+##Find player with user input
+player_df = stats_with_none[stats_with_none['Player'] == user_input]
+print(player_df)
 
 
 
@@ -79,22 +92,13 @@ print(player_df['FT%'])
 
 
 
-'''count = 0
-#List of player names
-player_list = []
-for i in player_stats:
-    #Add each player names to list
-    try:
-        player_name = i[0]
-        player_list.append(player_name.lower())
-        count += 1
-    #If empty do not add to list
-    except IndexError:
-        pass  
 
-#Matches user input to player lists
-matching = [name for name in player_list if user_input.lower() in name]
-'''
+
+
+
+
+
+
 
 
 
