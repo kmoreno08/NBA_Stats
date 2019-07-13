@@ -12,6 +12,9 @@ def convert_percent(val):
     new_val = val * 100
     return float(new_val)
 
+def calculate_gamescore():
+    pass
+
 
 user_input = input("What player would you like to see stats on? : ")
 
@@ -83,7 +86,13 @@ print(stats_with_none.info())
 player_df = stats_with_none[stats_with_none['Player'] == user_input]
 print(player_df)
 
-
+game_score = player_df["PTS"] + (.4 * player_df["FG"]) \
+             - (0.7 * player_df["FGA"]) - (.4 * (player_df["FTA"]-player_df["FT"]))\
+                                                          + (0.7 * player_df["ORB"]) + (0.3 * player_df["DRB"]) + player_df["STL"] + \
+                                                             (0.7 * player_df["AST"]) + (0.7 * player_df["BLK"]) - (0.4 * player_df["PF"])\
+                                                             - player_df["TOV"]
+print("****" * 10)
+print(game_score)
 
 
 
