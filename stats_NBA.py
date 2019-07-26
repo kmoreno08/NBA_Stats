@@ -21,6 +21,7 @@ print("Welcome! Please enter the players name that you would like to look up and
 print("This pulls live data from basketball-reference.com") 
 user_input = input("What player would you like to see stats on? : ")
 user_year = int(input("Which year would you like? : "))
+game_score_bool = input("Would you like to calculate Game Score Statistic? (Y/N) : ")
 
 
 
@@ -89,7 +90,7 @@ stats_with_none = stats_with_none.astype({"Age":'int64',"G":'int64',"GS":'int64'
 ##Find player with user input
 player_df = stats_with_none[stats_with_none['Player'] == user_input]
 
-
+#Calculate a players game score
 game_score = player_df["PTS"] + (.4 * player_df["FG"]) \
              - (0.7 * player_df["FGA"]) - (.4 * (player_df["FTA"]-player_df["FT"]))\
             + (0.7 * player_df["ORB"]) + (0.3 * player_df["DRB"]) + player_df["STL"] + \
@@ -97,8 +98,18 @@ game_score = player_df["PTS"] + (.4 * player_df["FG"]) \
             - player_df["TOV"]
 
 
-print("****" * 10)
-print(game_score)
+#Print player stats
+print()
+print("The stats for your player are: ")
+print(player_df)
+
+#Print game score if user says yes
+if game_score_bool == "Y":
+    print("***" * 10)
+    print("Refrence: Game score for an average player is 10.")
+    print(f"The game score statistic for {user_input} is: ")
+    print(game_score)
+
 
 
 
