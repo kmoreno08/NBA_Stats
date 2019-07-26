@@ -16,18 +16,22 @@ def calculate_gamescore():
     pass
 
 
+#Welcome message
+print("Welcome! Please enter the players name that you would like to look up and which year.") 
+print("This pulls live data from basketball-reference.com") 
 user_input = input("What player would you like to see stats on? : ")
+user_year = int(input("Which year would you like? : "))
+    
 
 
 #To display full data for player
 pd.set_option('display.max_columns', None)
 
 
-#Analyzing the year
-year = 2019
+
 
 #Scraping URL page with specific year
-url = "https://www.basketball-reference.com/leagues/NBA_{}_per_game.html".format(year)
+url = "https://www.basketball-reference.com/leagues/NBA_{}_per_game.html".format(user_year)
 html = urlopen(url)
 
 #Passed features to get around error
@@ -88,9 +92,11 @@ print(player_df)
 
 game_score = player_df["PTS"] + (.4 * player_df["FG"]) \
              - (0.7 * player_df["FGA"]) - (.4 * (player_df["FTA"]-player_df["FT"]))\
-                                                          + (0.7 * player_df["ORB"]) + (0.3 * player_df["DRB"]) + player_df["STL"] + \
-                                                             (0.7 * player_df["AST"]) + (0.7 * player_df["BLK"]) - (0.4 * player_df["PF"])\
-                                                             - player_df["TOV"]
+            + (0.7 * player_df["ORB"]) + (0.3 * player_df["DRB"]) + player_df["STL"] + \
+            (0.7 * player_df["AST"]) + (0.7 * player_df["BLK"]) - (0.4 * player_df["PF"])\
+            - player_df["TOV"]
+
+
 print("****" * 10)
 print(game_score)
 
