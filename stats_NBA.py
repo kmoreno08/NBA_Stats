@@ -21,7 +21,7 @@ print("Welcome! Please enter the players name that you would like to look up and
 print("This pulls live data from basketball-reference.com") 
 user_input = input("What player would you like to see stats on? : ")
 user_year = int(input("Which year would you like? : "))
-    
+
 
 
 #To display full data for player
@@ -83,12 +83,12 @@ stats_with_none = stats_with_none.astype({"Age":'int64',"G":'int64',"GS":'int64'
 
 
 
-print(stats_with_none.info())
+
 
 
 ##Find player with user input
 player_df = stats_with_none[stats_with_none['Player'] == user_input]
-print(player_df)
+
 
 game_score = player_df["PTS"] + (.4 * player_df["FG"]) \
              - (0.7 * player_df["FGA"]) - (.4 * (player_df["FTA"]-player_df["FT"]))\
